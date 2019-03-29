@@ -23,6 +23,7 @@ import sdmodifyquery
 import sdreplica
 import sdlog
 import sdconst
+import sdsqlutils
 from sdtools import print_stderr
 
 def modify():
@@ -36,6 +37,7 @@ def pause_all():
 
 def retry_all(filter=None):
     sdlog.info("SDMODIFY-343","Moving transfer from error to waiting..")
+    sdsqlutils.truncate_errorfiles_failed_url()
     nbr=sdmodifyquery.change_status(sdconst.TRANSFER_STATUS_ERROR,sdconst.TRANSFER_STATUS_WAITING)
     sdlog.info("SDMODIFY-226","%i transfer marked for retry"%(nbr))
     return nbr

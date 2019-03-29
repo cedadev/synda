@@ -16,6 +16,9 @@ import argparse
 import sdapp
 from sdexception import SDException
 import sddb
+import sdlog
+import sdconst
+import sqlite3
 
 def sql_injection_safe(s):
     regex=r'[^a-zA-Z0-9_]'
@@ -47,6 +50,19 @@ def resultset_to_dict(rs):
 
 def truncate_table(table,conn=sddb.conn):
     conn.execute("delete from %s"%table)
+    conn.commit()
+
+def truncate_part_of_table(table,col,pattern,conn=sddb.conn):
+    conn.execute("delete from %s where %s like '%s'"%(table,col,pattern))
+    conn.commit()
+
+def truncate_errorfiles_failed_url(conn=sddb.conn):
+    """This does just one job: delete from the failed_url table where the matching file table
+    has status='error'"""
+    cmd = "DELETE FROM failed_url WHERE url IN (SELECT failed_url.url FROM failed_url INNER JOIN"+\
+          " file ON failed_url.url LIKE '%s'||file.filename AND file.status='%s')" %\
+          ("%",sdconst.TRANSFER_STATUS_ERROR)
+    conn.execute(cmd)
     conn.commit()
 
 def nextval(col,tbl):
