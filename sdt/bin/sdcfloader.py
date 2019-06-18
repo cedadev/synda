@@ -34,6 +34,7 @@ def load(configuration_file,credential_file):
 # TODO: replace default options DICTIONNARY below with a default options FILE
 # (pb with options below is that they are available in all sections)
 default_options={'max_parallel_download':'8',
+                 'max_parallel_download_per_datanode':'8',
                  'user':'',
                  'group':'',
                  'hpss':'0',
