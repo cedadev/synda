@@ -135,10 +135,24 @@ def transfers_begin():
     new_transfer_count=max_transfer - sdfilequery.transfer_running_count()
     # datanode_count[datanode], is number of running transfers for a data node:
     datanode_count = sdfilequery.transfer_running_count_by_datanode()
+    max_datanode_count = sdconfig.config.getint('download', 'max_parallel_download_per_datanode')
+
     if new_transfer_count>0:
         transfers_needed = new_transfer_count
         for i in range(new_transfer_count):
+            # try:
+            #     tr=sddao.get_one_waiting_transfer()
+            #
+            #     prepare_transfer(tr)
+            #
+            #     if pre_transfer_check_list(tr):
+            #         sdfiledao.update_file(tr)
+            #         transfers.append(tr)
+            # except NoTransferWaitingException, e:
+            #     pass
+
             for datanode in datanode_count.keys():
+                if datanode == "crd-esgf-drc.ec.gc.ca": max_datanode_count = 3
                 try:
                     # Handle per-datanode maximum number of transfers:
                     try:

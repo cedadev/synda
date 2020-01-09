@@ -18,13 +18,17 @@ import sdsqlutils
 import sdtime
 import sdfiledao
 import sddatasetdao
+from sqlite3 import IntegrityError
 
 # --- parameter table --- #
 
 def add_parameter_value(name,value,commit=True,conn=sddb.conn):
+    try:
     conn.execute("insert into param (name,value) values (?,?)",(name,value))
     if commit:
         conn.commit()
+    except IntegrityError:
+        print('Duplicate value {} found in db, skipping...'.format(value))
 
 def fetch_parameters(conn=sddb.conn):
     """Retrieve all parameters
