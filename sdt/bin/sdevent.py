@@ -242,7 +242,7 @@ def dataset_complete_event(project,model,dataset,commit=True):
             else:
                 non_latest_dataset_complete_output12_event(project,model,dataset_pattern,commit=commit)
 
-    create_arrived_log(dataset_pattern.replace("/", "."))
+    create_arrived_log(dataset.local_path.replace("/", "."))
 
 
 def latest_dataset_complete_event(project,model,dataset_pattern,commit=True):
