@@ -11,6 +11,7 @@
 
 """This script contains event related routines."""
 
+import os
 import argparse
 import logging # we need this to switch log level depending on postprocessing flag
 import sdvariable
@@ -124,6 +125,17 @@ def variable_complete_output12_event(project,model,dataset_pattern,variable,comm
     event.priority=sdconst.DEFAULT_PRIORITY
     sdeventdao.add_event(event,commit=commit)
 
+
+def create_arrived_log(dataset_id):
+    """
+    Create a zero length file with the dataset ID as filename
+    """
+    arrived_logs_dir = sdconfig.config.get('post_processing', 'arrived_logs_dir')
+    path = os.path.join(arrived_logs_dir, dataset_id)
+    with open(path, "w"):
+        pass
+
+
 def dataset_complete_event(project,model,dataset,commit=True):
     sdlog.log("SYDEVENT-004","'dataset_complete_event' triggered (%s)"%dataset.dataset_functional_id,event_triggered_log_level)
 
@@ -139,7 +151,6 @@ def dataset_complete_event(project,model,dataset,commit=True):
     event.priority=sdconst.DEFAULT_PRIORITY
     sdeventdao.add_event(event,commit=commit)
     """
-
     # <<<--- 'latest' flag management related code begin
 
     # store current 'latest' flag state
@@ -230,6 +241,9 @@ def dataset_complete_event(project,model,dataset,commit=True):
                 latest_output12_dataset_complete_event(project,model,dataset_pattern,commit=commit)
             else:
                 non_latest_dataset_complete_output12_event(project,model,dataset_pattern,commit=commit)
+
+    create_arrived_log(dataset.local_path.replace("/", "."))
+
 
 def latest_dataset_complete_event(project,model,dataset_pattern,commit=True):
     # this event means latest dataset has been completed (beware: no 'latest switch' event here: was latest before and still is)
