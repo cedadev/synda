@@ -151,8 +151,6 @@ def dataset_complete_event(project,model,dataset,commit=True):
     event.priority=sdconst.DEFAULT_PRIORITY
     sdeventdao.add_event(event,commit=commit)
     """
-    create_arrived_log(dataset_pattern.replace("/", "."))
-
     # <<<--- 'latest' flag management related code begin
 
     # store current 'latest' flag state
@@ -243,6 +241,9 @@ def dataset_complete_event(project,model,dataset,commit=True):
                 latest_output12_dataset_complete_event(project,model,dataset_pattern,commit=commit)
             else:
                 non_latest_dataset_complete_output12_event(project,model,dataset_pattern,commit=commit)
+
+    create_arrived_log(dataset_pattern.replace("/", "."))
+
 
 def latest_dataset_complete_event(project,model,dataset_pattern,commit=True):
     # this event means latest dataset has been completed (beware: no 'latest switch' event here: was latest before and still is)
