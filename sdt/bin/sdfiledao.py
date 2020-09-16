@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/group_workspaces/jasmin3/esgf_repl/synda/sdt/bin/python2.7
 # -*- coding: ISO-8859-1 -*-
 
 ##################################
@@ -14,6 +14,7 @@
 import sdapp
 from sdexception import SDException
 import sddb
+import sdlog
 import sdconfig
 import sdsqlutils
 from sdtypes import File
@@ -153,7 +154,8 @@ def update_file(file,commit=True,conn=sddb.conn):
 
     # check
     if rowcount==0:
-        raise SDException("SYNCDDAO-121","file not found (file_id=%i)"%(i__tr.file_id,))
+        #raise SDException("SYNCDDAO-121","file not found (file_id=%i)"%(i__tr.file_id,))
+        sdlog.warning('SYNCDDAO-888', 'File was not found')#(file_id=%i)'%(i__tr.file_id,))
     elif rowcount>1:
         raise SDException("SYNCDDAO-120","duplicate functional primary key (file_id=%i)"%(i__tr.file_id,))
 
