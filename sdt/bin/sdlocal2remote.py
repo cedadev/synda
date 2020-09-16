@@ -38,10 +38,13 @@ def run(facets_groups):
 
     for facets_group in facets_groups:
         # shallow copy of the rules
-        local_name_rules = name_rules
+        local_name_rules = name_rules.copy()
         if 'project' in facets_group.keys():
             if facets_group['project'] == ['CMIP6']:
-                del local_name_rules['frequency']
+                try:
+                    del local_name_rules['frequency']
+                except KeyError:
+                    pass
 
         facets_group = sdtranslate.translate_name(facets_group, local_name_rules)
         facets_groups_new.append(facets_group)
