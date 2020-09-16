@@ -4,8 +4,8 @@
 ##################################
 #  @program        synda
 #  @description    climate models data transfer program
-#  @copyright      Copyright “(c)2009 Centre National de la Recherche Scientifique CNRS. 
-#                             All Rights Reserved”
+#  @copyright      Copyright "(c)2009 Centre National de la Recherche Scientifique CNRS. 
+#                             All Rights Reserved"
 #  @license        CeCILL (https://raw.githubusercontent.com/Prodiguer/synda/master/sdt/doc/LICENSE)
 ##################################
 
@@ -26,6 +26,8 @@ class SDException(Exception):
 class FileNotFoundException(SDException):
     pass
 class HttpUrlNotFoundException(SDException):
+    pass
+class NextUrlNotFoundException(SDException):
     pass
 class NoTransferWaitingException(SDException):
     pass
@@ -75,4 +77,7 @@ class OpenIDNotSetException(CertificateRenewalException):
     pass
 #
 class MissingDatasetUrlException(SDException):
+    pass
+
+class EnvironmentNotSet(SDException):
     pass
